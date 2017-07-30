@@ -9,23 +9,24 @@
 #define EDGE_H_
 
 #include <gfsm.h>
-#include "Node.h"
+// #include "Node.h"
+template <class T> class Node;
 
 namespace std {
 
 template <class T> class Edge {
 public:
 	Edge();
-	Edge(gfsmStateId src, gfsmStateId dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
+	Edge(Node<T>* src, Node<T>* dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
 	~Edge();
-	void initEdge(gfsmStateId src, gfsmStateId dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
+	void initEdge(Node<T>* src, Node<T>* dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
 	gfsmArc* getEdge();
 	Node<T>* getSource();
 	Node<T>* getDestination();
 
 private:
-	Node<T> source;
-	Node<T> destination;
+	Node<T>* source;
+	Node<T>* destination;
 	gfsmArc* edge;
 };
 
