@@ -16,6 +16,8 @@
 namespace std {
 
 template <class T> class Graph {
+
+	//TODO: complete or simplify this class.
 public:
 	Graph();
 	Graph(gfsmAutomaton* autom);
@@ -23,6 +25,7 @@ public:
 	gfsmAutomaton* getAutomaton();
 	Node<T>* getInit();
 	map<int,Node<T>>* getQidNodeMap();
+	map<int,Edge<T>>* getQidEdgeMap();
 	void setAutomaton(gfsmAutomaton* autom);
 	void addNode(bool initial, bool final);
 	void addEdge(gfsmArc* arc, Node<T> source, Node<T> destination, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
@@ -31,6 +34,7 @@ private:
 	gfsmAutomaton* automaton;
 	Node<T>* init;
 	map<int,Node<T>>* qidNodeMap;
+	map<int, Edge<T>>* qidEdgeMap;
 
 };
 

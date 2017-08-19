@@ -14,12 +14,14 @@ Graph<T>::Graph() {
 	automaton = gfsm_automaton_new();
 	init = NULL;
 	qidNodeMap = new map<int,Node<T>>();
+	qidEdgeMap = new map<int,Edge<T>>();
 }
 
 template <class T>
 Graph<T>::Graph(gfsmAutomaton* autom) {
 	automaton = NULL;
 	qidNodeMap = new map<int,Node<T>>();
+	qidEdgeMap = new map<int,Edge<T>>();
 	setAutomaton(autom);
 	int qid = gfsm_automaton_get_root(automaton);
 	init = qidNodeMap->find(qid);
@@ -32,6 +34,7 @@ Graph<T>::~Graph() {
 	init.~Nodo();
 	init = NULL;
 	qidNodeMap->~map();
+	qidEdgeMap->~map();
 }
 
 template <class T>
@@ -50,15 +53,22 @@ map<int,Node<T>>* Graph<T>::getQidNodeMap() {
 }
 
 template <class T>
+map<int,Edge<T>>* Graph<T>::getQidEdgeMap() {
+	return qidEdgeMap;
+}
+
+template <class T>
 void Graph<T>::setAutomaton(gfsmAutomaton* autom) {
 	if (automaton != NULL) {
 		gfsm_automaton_free(automaton);
 	}
 	automaton = autom;
+
+	/*
 	for(int i = 0; i < gfsm_automaton_n_states(automaton); i++) {
 		//TODO: complete the function.
 	}
-
+	*/
 }
 
 template <class T>
@@ -75,9 +85,9 @@ template <class T>
 void Graph<T>::addEdge(gfsmArc* arc, Node<T> source, Node<T> destination, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt) {
 	int qid = 0;
 	qid = gfsm_automaton_add_arc(automaton, source.getQid(), destination.getQid(), lo, hi, wt);
-	Edge<T> edge = new Edge<T>(source.getQid(), destination.getQid(), lo, hi, wt);
+	Edge<T> edge = new Edge<T>(source, destination, lo, hi, wt);
 	source.getEdges().insert(edge);
-
+	qidEdgeMap->insert(qid, edge);
 }
 
 } /* namespace std */

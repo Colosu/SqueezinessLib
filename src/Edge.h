@@ -10,11 +10,14 @@
 
 #include <gfsm.h>
 // #include "Node.h"
+
 template <class T> class Node;
 
 namespace std {
 
 template <class T> class Edge {
+
+	//TODO: complete or simplify/delete this class.
 public:
 	Edge();
 	Edge(Node<T>* src, Node<T>* dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);

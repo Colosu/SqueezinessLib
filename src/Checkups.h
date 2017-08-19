@@ -8,12 +8,16 @@
 #ifndef CHECKUPS_H_
 #define CHECKUPS_H_
 
+#include <gfsm.h>
+#include "Graph.h"
+
 namespace std {
 
 class Checkups {
 public:
 	Checkups();
 	~Checkups();
+	bool equal(Graph<void>* g1, Graph<void>* g2);
 };
 
 } /* namespace std */

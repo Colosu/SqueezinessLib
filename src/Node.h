@@ -15,6 +15,8 @@
 namespace std {
 
 template <class T> class Node {
+
+	//TODO: complete or simplify/delete this class.
 public:
 	Node();
 	Node(T dat, bool initial, bool final);

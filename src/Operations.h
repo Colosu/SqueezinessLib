@@ -8,12 +8,17 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
+#include <gfsm.h>
+#include "Graph.h"
+
 namespace std {
 
 class Operations {
 public:
 	Operations();
 	~Operations();
+	void minimization(Graph<void>* g);
+	gfsmAutomaton* product(Graph<void>* g1, Graph<void>* g2);
 };
 
 } /* namespace std */

@@ -6,8 +6,11 @@
  */
 
 #include "gfsm.h"
-
-
-
-
-
+#include "Node.h"
+#include "Edge.h"
+#include "Graph.h"
+#include "IOHandler.h"
+#include "Mutations.h"
+#include "Operations.h"
+#include "Checkups.h"
+#include "View.h"
