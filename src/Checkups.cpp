@@ -51,12 +51,56 @@ bool Checkups::is_valid(Graph<void>* g) {
 	return false;
 }
 
-bool Checkups::has_FEP(Graph<void>* g, int length, int &k) {
+bool Checkups::has_FEP(Graph<void>* g1, Graph<void>* g2, int length, int &k) {
 
-	//TODO: Check if g has FEP.
+	gfsmAutomaton* orig = gfsm_automaton_clone(g1->getAutomaton());
+	gfsmAutomaton* mut = gfsm_automaton_clone(g2->getAutomaton());
+	k = 0;
 
-	k = 1;
-	return true;
+	return FEPaux(orig, mut, orig->root_id, mut->root_id, "", "", 0, k, length);
+}
+
+
+bool Checkups::FEPaux(gfsmAutomaton* fsm1, gfsmAutomaton* fsm2, int qid1, int qid2, string output1, string output2, int iter, int &k, int length) {
+
+	if (iter == length) {
+		if (k != 0 && output1 == output2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	gfsmArcIter* arcIter1 = new gfsmArcIter();
+	gfsmArcIter* arcIter2 = new gfsmArcIter();
+	gfsmArc* arc1 = new gfsmArc();
+	gfsmArc* arc2 = new gfsmArc();
+	bool result = false;
+
+	gfsm_arciter_open(arcIter1, fsm1, qid1);
+	gfsm_arciter_open(arcIter2, fsm2, qid2);
+	arc1 = gfsm_arc_clone(gfsm_arciter_arc(arcIter1));
+	arc2 = gfsm_arc_clone(gfsm_arciter_arc(arcIter2));
+
+	if (qid1 != qid2) {
+
+		if (output1 != output2) {
+			return false;
+		} else {
+			k = iter;
+		}
+	}
+
+	result = result || FEPaux(fsm1, fsm2, gfsm_arc_target(arc1), gfsm_arc_target(arc2), output1 + to_string(gfsm_arc_upper(arc1)), output2 + to_string(gfsm_arc_upper(arc2)), iter + 1, k, length);
+
+	for (unsigned int i = 1; i < gfsm_automaton_out_degree(fsm1, qid1); i++) {
+		gfsm_arciter_next(arcIter1);
+		gfsm_arciter_next(arcIter2);
+		arc1 = gfsm_arc_clone(gfsm_arciter_arc(arcIter1));
+		arc2 = gfsm_arc_clone(gfsm_arciter_arc(arcIter2));
+		result = result || FEPaux(fsm1, fsm2, gfsm_arc_target(arc1), gfsm_arc_target(arc2), output1 + to_string(gfsm_arc_upper(arc1)), output2 + to_string(gfsm_arc_upper(arc2)), iter + 1, k, length);
+	}
+	return result;
 }
 
 } /* namespace std */

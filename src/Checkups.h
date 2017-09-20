@@ -19,7 +19,10 @@ public:
 	~Checkups();
 	bool are_equivalent(Graph<void>* g1, Graph<void>* g2);
 	bool is_valid(Graph<void>* g);
-	bool has_FEP(Graph<void>* g, int length, int &k);
+	bool has_FEP(Graph<void>* g1, Graph<void>* g2, int length, int &k);
+
+private:
+	bool FEPaux(gfsmAutomaton* fsm1, gfsmAutomaton* fsm2, int qid1, int qid2, string output1, string output2, int iter, int &k, int length);
 };
 
 } /* namespace std */

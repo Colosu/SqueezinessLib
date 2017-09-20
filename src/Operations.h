@@ -21,6 +21,9 @@ public:
 	gfsmAutomaton* product(Graph<void>* g1, Graph<void>* g2);
 	double Squeeziness(Graph<void>* g, int length);
 	double ProbSqueeziness(Graph<void>* g, int length);
+
+private:
+	void SqueezinessAux(gfsmAutomaton* fsm, int qid, int iter, int k, int* inputs, map<string,int>* mapOtoI, string output);
 };
 
 } /* namespace std */

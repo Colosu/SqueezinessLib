@@ -36,6 +36,9 @@ Graph<void>* IOHandler::readGraph(string file) {
 		cerr << "Unable to load the automaton." << endl;
 		return NULL;
 	}
+
+	fclose(f);
+	e->~gfsmError();
 	return g;
 
 }
