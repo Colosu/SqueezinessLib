@@ -17,7 +17,9 @@ class Checkups {
 public:
 	Checkups();
 	~Checkups();
-	bool equal(Graph<void>* g1, Graph<void>* g2);
+	bool are_equivalent(Graph<void>* g1, Graph<void>* g2);
+	bool is_valid(Graph<void>* g);
+	bool has_FEP(Graph<void>* g, int length, int &k);
 };
 
 } /* namespace std */

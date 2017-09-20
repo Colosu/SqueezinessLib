@@ -24,7 +24,30 @@ void Operations::minimization(Graph<void>* g) {
 gfsmAutomaton* Operations::product(Graph<void>* g1, Graph<void>* g2) {
 	gfsmAutomaton* a1 = gfsm_automaton_clone(g1->getAutomaton());
 	gfsmAutomaton* a2 = gfsm_automaton_clone(g2->getAutomaton());
-	return gfsm_automaton_product2(a1, a2);
+	gfsmAutomaton* prod = gfsm_automaton_product2(a1, a2);
+	gfsm_automaton_free(a1);
+	gfsm_automaton_free(a2);
+	return prod;
+}
+
+double Operations::Squeeziness(Graph<void>* g, int length) {
+
+	if (length <= 0) {
+		return 0;
+	}
+
+	//TODO: calculate Squeeziness.
+	return 0;
+}
+
+double Operations::ProbSqueeziness(Graph<void>* g, int length) {
+
+	if (length <= 0) {
+		return 0;
+	}
+
+	//TODO: calculate Probability Squeeziness.
+	return 0;
 }
 
 

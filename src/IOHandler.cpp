@@ -5,6 +5,10 @@
  *      Author: colosu
  */
 
+#include <stdio.h>
+#include <iostream>
+#include <gfsmAutomatonIO.h>
+#include "Graph.h"
 #include "IOHandler.h"
 
 namespace std {
@@ -16,6 +20,24 @@ IOHandler::IOHandler() {
 
 IOHandler::~IOHandler() {
 	// TODO Auto-generated destructor stub
+}
+
+Graph<void>* IOHandler::readGraph(string file) {
+
+	Graph<void>* g = new Graph<void>;
+	FILE* f;
+	gfsmError** e = new gfsmError*();
+	f = fopen(file.c_str(), "r");
+	if (f == NULL) {
+		cerr << "Unable to open the file." << endl;
+		return NULL;
+	}
+	if (!gfsm_automaton_load_bin_file(g->getAutomaton(), f, e)) {
+		cerr << "Unable to load the automaton." << endl;
+		return NULL;
+	}
+	return g;
+
 }
 
 } /* namespace std */
