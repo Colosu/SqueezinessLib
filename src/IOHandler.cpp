@@ -38,7 +38,6 @@ Graph<void>* IOHandler::readGraph(string file) {
 	}
 
 	fclose(f);
-	e->~gfsmError();
 	return g;
 
 }
