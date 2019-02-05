@@ -8,21 +8,27 @@
 #ifndef CHECKUPS_H_
 #define CHECKUPS_H_
 
-#include <gfsm.h>
+#include <fst/fstlib.h>
+#include <string>
 #include "Graph.h"
 
-namespace std {
+namespace fst {
 
 class Checkups {
 public:
 	Checkups();
 	~Checkups();
-	bool are_equivalent(Graph<void>* g1, Graph<void>* g2);
-	bool is_valid(Graph<void>* g);
-	bool has_FEP(Graph<void>* g1, Graph<void>* g2, int length, int &k);
+	bool are_equivalent(Graph* g1, Graph* g2);
+	bool is_valid(Graph* g);
+	bool is_validMutation(Graph* g);
+	bool is_validInput(Graph* g, string input, int length);
+	double PFEPState(Graph* g1, Graph* g2, int length);
+	bool has_FEPState(Graph* g1, Graph* g2, int length, int &k);
+	bool has_FEPInput(Graph* g, string input1, string input2, int length);
 
 private:
-	bool FEPaux(gfsmAutomaton* fsm1, gfsmAutomaton* fsm2, int qid1, int qid2, string output1, string output2, int iter, int &k, int length);
+	void PFEPauxState(StdMutableFst* fsm1, StdMutableFst* fsm2, int qid1, int qid2, std::string output1, std::string output2, int iter, int &sucess, int &fails, int length, bool aux);
+	bool FEPauxState(StdMutableFst* fsm1, StdMutableFst* fsm2, int qid1, int qid2, std::string output1, std::string output2, int iter, int &k, int length);
 };
 
 } /* namespace std */

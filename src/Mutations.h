@@ -9,13 +9,15 @@
 #define MUTATIONS_H_
 
 #include "Graph.h"
-namespace std {
+
+namespace fst {
 
 class Mutations {
 public:
 	Mutations();
 	~Mutations();
-	Graph<void>* mutate(Graph<void>* g);
+	Graph* mutateState(Graph* g, int length);
+	string mutateInput(string input1, int length);
 };
 
 } /* namespace std */

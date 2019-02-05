@@ -5,55 +5,78 @@
  *      Author: colosu
  */
 
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <fst/fstlib.h>
+#include "Graph.h"
 #include "Mutations.h"
+#include "Checkups.h"
 
-namespace std {
+namespace fst {
 
 Mutations::Mutations() {
-	// TODO Auto-generated constructor stub
 
+	std::srand(time(NULL));
 }
 
 Mutations::~Mutations() {
-	// TODO Auto-generated destructor stub
+
 }
 
-Graph<void>* Mutations::mutate(Graph<void>* g) {
+Graph* Mutations::mutateState(Graph* g, int length) {
 
-	Graph<void>* m = new Graph<void>;
-	gfsmArcIter* arcIter = new gfsmArcIter();
-	gfsmAutomaton* mut = gfsm_automaton_clone(g->getAutomaton());
-	gfsmArc* arc = new gfsmArc();
+	Graph* m = new Graph();
+	//Checkups* check = new Checkups();
+	StdMutableFst* mut = g->getTransducer()->Copy();
+	StdArc arc;
 
-	int state = rand() % gfsm_automaton_n_states(mut);
-	int ind = rand() % gfsm_automaton_out_degree(mut, state);
+	//do {
 
-	gfsm_arciter_open(arcIter, mut, state);
-	for (int i = 0; i < ind; i++) {
-		gfsm_arciter_next(arcIter);
-	}
-	arc = gfsm_arc_clone(gfsm_arciter_arc(arcIter));
-	if(arc == NULL) {
-		return NULL;
-	}
+		int count = 0;
+		int state;
 
-	gfsm_automaton_remove_arc_ptr(mut, gfsm_arciter_arc(arcIter));
+		while (count == 0 || count == 1) {
+			state = rand() % (min(length - 1, mut->NumStates() - 1));
+			for (ArcIterator<StdMutableFst> arcI(*mut, state); !arcI.Done(); arcI.Next()) {
+				count++;
+			}
+		}
 
-	unsigned int obj = rand() % gfsm_automaton_n_states(mut);
-	while (obj == gfsm_arc_source(arc) || obj == gfsm_arc_target(arc)) {
-		obj = rand() % gfsm_automaton_n_states(mut);
-	}
+		MutableArcIterator<StdMutableFst>* arcIter = new MutableArcIterator<StdMutableFst>(mut, state);
 
-	int r = rand() % 2;
-	if (r == 0) {
-		gfsm_automaton_add_arc(mut, obj, gfsm_arc_target(arc), gfsm_arc_lower(arc), gfsm_arc_upper(arc), gfsm_arc_weight(arc));
-	} else {
-		gfsm_automaton_add_arc(mut, gfsm_arc_source(arc), obj, gfsm_arc_lower(arc), gfsm_arc_upper(arc), gfsm_arc_weight(arc));
-	}
+		arcIter->Seek(rand() % count);
 
-	m->setAutomaton(mut);
+		arc = arcIter->Value();
+
+		int obj = rand() % mut->NumStates();
+		while (obj == arc.nextstate || obj == state) {
+			obj = rand() % mut->NumStates();
+		}
+
+		arc.nextstate = obj;
+		arcIter->SetValue(arc);
+
+		//delete arcIter;
+	//} while(check->are_equivalent(g, new Graph(mut)));
+
+	m->setTransducer(mut);
 
 	return m;
+}
+
+
+string Mutations::mutateInput(string input1, int length) {
+
+	string input = input1;
+	int pos = rand()%length;
+	int val = rand()%124;
+	while (val < 33 || val == input1[pos]) {
+		val = rand()%124;
+	}
+	input[pos] = val;
+
+	return input;
 }
 
 } /* namespace std */

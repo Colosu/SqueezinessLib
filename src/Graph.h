@@ -8,33 +8,21 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
-#include <gfsm.h>
-#include <map>
-#include "Node.h"
-#include "Edge.h"
+#include <fst/fstlib.h>
 
-namespace std {
+namespace fst {
 
-template <class T> class Graph {
-
-	//TODO: complete or simplify this class.
+class Graph {
 public:
 	Graph();
-	Graph(gfsmAutomaton* autom);
+	Graph(StdMutableFst* trans);
 	~Graph();
-	gfsmAutomaton* getAutomaton();
-	Node<T>* getInit();
-	map<int,Node<T>>* getQidNodeMap();
-	map<int,Edge<T>>* getQidEdgeMap();
-	void setAutomaton(gfsmAutomaton* autom);
-	void addNode(bool initial, bool final);
-	void addEdge(gfsmArc* arc, Node<T> source, Node<T> destination, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt);
+	StdMutableFst* getTransducer();
+	void setTransducer(StdMutableFst* trans);
+	string getRandInput(int length);
 
 private:
-	gfsmAutomaton* automaton;
-	Node<T>* init;
-	map<int,Node<T>>* qidNodeMap;
-	map<int, Edge<T>>* qidEdgeMap;
+	StdMutableFst* transducer;
 
 };
 

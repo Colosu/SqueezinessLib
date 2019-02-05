@@ -5,39 +5,30 @@
  *      Author: colosu
  */
 
-#include <stdio.h>
 #include <iostream>
-#include <gfsmAutomatonIO.h>
+#include <string>
+#include <fst/fstlib.h>
 #include "Graph.h"
 #include "IOHandler.h"
 
-namespace std {
+namespace fst {
 
 IOHandler::IOHandler() {
-	// TODO Auto-generated constructor stub
 
 }
 
 IOHandler::~IOHandler() {
-	// TODO Auto-generated destructor stub
+
 }
 
-Graph<void>* IOHandler::readGraph(string file) {
+Graph* IOHandler::readGraph(std::string file) {
 
-	Graph<void>* g = new Graph<void>;
-	FILE* f;
-	gfsmError** e = new gfsmError*();
-	f = fopen(file.c_str(), "r");
-	if (f == NULL) {
-		cerr << "Unable to open the file." << endl;
+	Graph* g = new Graph();
+	g->setTransducer(StdMutableFst::Read(file));
+	if (g->getTransducer() == NULL) {
+		std::cerr << "Unable to load the automaton." << std::endl;
 		return NULL;
 	}
-	if (!gfsm_automaton_load_bin_file(g->getAutomaton(), f, e)) {
-		cerr << "Unable to load the automaton." << endl;
-		return NULL;
-	}
-
-	fclose(f);
 	return g;
 
 }

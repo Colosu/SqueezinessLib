@@ -5,9 +5,7 @@
  *      Author: colosu
  */
 
-#include "gfsm.h"
-#include "Node.h"
-#include "Edge.h"
+#include <fst/fstlib.h>
 #include "Graph.h"
 #include "IOHandler.h"
 #include "Mutations.h"

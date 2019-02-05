@@ -8,15 +8,16 @@
 #ifndef IOHANDLER_H_
 #define IOHANDLER_H_
 
+#include <string>
 #include "Graph.h"
 
-namespace std {
+namespace fst {
 
 class IOHandler {
 public:
 	IOHandler();
 	~IOHandler();
-	Graph<void>* readGraph(string file);
+	Graph* readGraph(std::string file);
 
 private:
 

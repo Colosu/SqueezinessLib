@@ -8,22 +8,37 @@
 #ifndef OPERATIONS_H_
 #define OPERATIONS_H_
 
-#include <gfsm.h>
+#include <semaphore.h>
+#include <fst/fstlib.h>
 #include "Graph.h"
 
-namespace std {
+namespace fst {
+
+typedef struct {
+	StdMutableFst* fsm;
+	int qid;
+	int iter;
+	int length;
+	int* inputs;
+	std::map<string, int>* mapOtoI;
+	string output;
+	sem_t* sem;
+} args;
+
+void SqueezinessAux(void * argum);
 
 class Operations {
 public:
 	Operations();
 	~Operations();
-	void minimization(Graph<void>* g);
-	gfsmAutomaton* product(Graph<void>* g1, Graph<void>* g2);
-	double Squeeziness(Graph<void>* g, int length);
-	double ProbSqueeziness(Graph<void>* g, int length);
+	void minimization(Graph* g);
+	StdMutableFst* product(Graph* g1, Graph* g2);
+	void Squeeziness(Graph* g, int length, double Sq[], int I);
+	void ProbSqueeziness(Graph* g, int length, double PSq[], int I);
+	void ProbAndSqueeziness(Graph* g, int length, double Sq[], double PSq[], int I);
 
 private:
-	void SqueezinessAux(gfsmAutomaton* fsm, int qid, int iter, int k, int* inputs, map<string,int>* mapOtoI, string output);
+
 };
 
 } /* namespace std */
